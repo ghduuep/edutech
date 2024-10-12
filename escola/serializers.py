@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from escola.models import Aluno, Matricula, Turma
+from escola.models import Aluno, Matricula, Turma, Nota
 from escola.validators import cpf_invalido, nome_invalido
 
 class AlunoSerializer(serializers.ModelSerializer):
@@ -22,4 +22,9 @@ class TurmaSerializer(serializers.ModelSerializer):
 class MatriculaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
+        fields = '__all__'
+
+class NotaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nota
         fields = '__all__'
