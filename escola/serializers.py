@@ -27,4 +27,23 @@ class MatriculaSerializer(serializers.ModelSerializer):
 class NotaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Nota
-        fields = '__all__'
+        fields = ['nota', 'bimestre']
+    
+class MediaNotaSerializer(serializers.ModelSerializer):
+    media = serializers.SerializerMethodField()
+    aprovado = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Aluno
+        fields = ['id', 'nome', 'media', 'aprovado']
+
+    def get_media(self, obj):
+        notas = Nota.objects.filter(aluno=obj)
+        if notas.exists():
+            media = sum(nota.nota for nota in notas) / len(notas)
+            return round(media, 2)
+        return 0.0                                                                                                                         
+    
+    def get_aprovado(self, obj):
+        media = self.get_media(obj)
+        return media >= 28
